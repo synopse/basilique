@@ -237,13 +237,15 @@ type
   // - bounded context: User preferences
   TSQLUser = class(TSQLRecordNoCaseExtended)
   protected
-    fEmail: TEmailDynArray;
+    fName: RawUTF8;
+    fEmail: RawUTF8;
     fAddress: TAddressObjArray;
     fPreferences: TUserPreferencesObjArray;
   published
-    property Email: TEmailDynArray read fEmail;
-    property Address: TAddressObjArray read fAddress;
-    property Preferences: TUserPreferencesObjArray read fPreferences;
+    property name: RawUTF8 read fName write fName;
+    property email: RawUTF8 read fEmail write fEmail;
+    property address: TAddressObjArray read fAddress;
+    property preferences: TUserPreferencesObjArray read fPreferences;
   end;
 
   /// general User authentication/autorization Aggregaate

@@ -1,7 +1,7 @@
-/// Kingdom User Registration Core Services implementation
+/// Kingdom User Services interfaces
 // - this unit is a part of the freeware Synopse Basilique framework,
 // licensed under a GPL v3 license
-unit KdomServRegister;
+unit KdomServUserAPI;
 
 {
     This file is part of Synopse Basilique framework.
@@ -58,63 +58,23 @@ uses
   SynLog,
   mORMot,
   KdomObjUser,
-  KdomObjCommunity,
-  KdomServUserAPI; // define Kingdom API interfaces
+  KdomObjCommunity;
 
 
 type
-  TServiceRegister = class(TInjectableObjectRest, IRegister)
-  protected
-    // IRegister methods
+  TRegisterResult = (rrSuccess, rrInternalError,
+    rrUserNameTooWeak, rrUserEmailInvalid,
+    rrUserNameAlreadyExists, rrUserEmailAlreadyExists,
+    rrWeakPassword);
+
+  /// User Registration Kingdom service
+  IRegister = interface(IInvokable)
+    ['{8090452A-901C-42A6-872C-F0732429977E}']
     function NewUser(const name, email, plainpassword: RawUTF8): TRegisterResult;
   end;
 
 
 implementation
-
-{ TServiceRegister  }
-
-function TServiceRegister.NewUser(const name, email, plainpassword: RawUTF8): TRegisterResult;
-var
-  u: TSQLUser;
-  ua: TSQLUserAuth;
-begin
-  result := rrUserNameTooWeak;
-  if (length(name) < 4) then
-    exit;
-  result := rrUserEmailInvalid;
-  if not IsValidEmail(pointer(email)) then
-    exit;
-  result := rrUserNameAlreadyExists;
-  if fServer.OneFieldValue(TSQLUser, 'ID', 'name=?', [name]) <> '' then
-    exit;
-  result := rrUserEmailAlreadyExists;
-  if fServer.OneFieldValue(TSQLUser, 'ID', 'email=?', [email]) <> '' then
-    exit;
-  ua := TSQLUserAuth.Create;
-  try
-    result := rrWeakPassword;
-    if not ua.SetPassword(plainpassword) then
-      exit;
-    result := rrInternalError;
-    u := TSQLUser.Create;
-    try
-      u.name := name;
-      u.email := email;
-      if fServer.Add(u, true) <> 0 then begin
-        ua.IDValue := u.IDValue;
-        if fServer.Add(ua, true, true) <> 0 then
-          result := rrSuccess
-        else // rollback User on UserAuth writing problem (unlikely)
-          fServer.Delete(TSQLUser, u.IDValue);
-      end;
-    finally
-      u.Free;
-    end;
-  finally
-    ua.Free;
-  end;
-end;
 
 
 initialization

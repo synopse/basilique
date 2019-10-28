@@ -57,7 +57,9 @@ uses
   KdomObjUserTests in '..\kdom\obj\KdomObjUserTests.pas',
   KdomObjCommunity in '..\kdom\obj\KdomObjCommunity.pas',
   KdomObjText in '..\kdom\obj\KdomObjText.pas',
-  KdomObjThread in '..\kdom\obj\KdomObjThread.pas';
+  KdomObjThread in '..\kdom\obj\KdomObjThread.pas',
+  KdomServUserAPI in '..\kdom\serv\KdomServUserAPI.pas',
+  KdomServRegister in '..\kdom\serv\KdomServRegister.pas';
 
 type
   TTestBasilique = class(TSynTestsLogged)
