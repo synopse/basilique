@@ -58,6 +58,31 @@ uses
   SynLog,
   mORMot;
 
+type
+  // supported languages for Text content
+  TTextLanguage = (
+    tlDari, tlBosnian, tlCatalan, tlCorsican, tlCzech, tlCoptic,
+    tlSlavic, tlWelsh, tlDanish, tlGerman, tlHebrew, tlGreek, tlLatin,
+    tlArabic, tlEnglish, tlSpanish, tlFarsi, tlFinnish,
+    tlFrench, tlIrish, tlGaelic, tlAramaic, tlCroatian, tlHungarian,
+    tlArmenian, tlIndonesian, tlInterlingue, tlIcelandic, tlItalian,
+    tlJapanese, tlKorean, tlTibetan, tlLituanian, tlMalgash, tlNorwegian,
+    tlOccitan, tlPortuguese, tlPolish, tlRomanian, tlRussian, tlSanskrit,
+    tlSlovak, tlSlovenian, tlAlbanian, tlSerbian, tlSwedish, tlSyriac,
+    tlTurkish, tlTahitian, tlUkrainian, tlVietnamese, tlChinese, tlDutch,
+    tlThai, tlBulgarian, tlBelarusian, tlEstonian, tlLatvian, tlMacedonian,
+    tlPashtol );
+ /// allows to display text in preference order for TTextPreferences
+ TTextLanguageDynArray = array of TTextLanguage;
+
+const
+  /// ISO 639-1 compatible abbreviations (not to be translated):
+  TextLanguageAbr: packed array[TTextLanguage] of RawUTF8 = (
+    'ad','bs','ca','co','cs','cp','cu','cy','da','de','he','gr','la','ar',
+    'en','es','fa','fi','fr','ga','gd','am','hr','hu','hy','id','ie','is',
+    'it','ja','ko','bo','lt','mg','no','oc','pt','pl','ro','ru','sa','sk',
+    'sl','sq','sr','sv','sy','tr','ty','uk','vi','zh','nl',
+    'th','bg','be','et','lv','mk','ap');
 
 
 implementation
