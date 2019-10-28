@@ -56,6 +56,7 @@ uses
   SynCommons,
   SynTable,
   SynLog,
+  SynCrypto, // for password
   mORMot;
 
 
@@ -244,6 +245,20 @@ type
     property Preferences: TUserPreferencesObjArray read fPreferences;
   end;
 
+  /// general User authentication/autorization Aggregaate
+  // - ID is a 64-bit TUsedID
+  // - bounded context: User security
+  TSQLUserAuth = class(TSQLRecordNoCaseExtended)
+  protected
+    fPassword: RawUTF8;
+  public
+    /// properly set the password field, with salt and strongness validation
+    function SetPassword(const plain: RawUTF8): boolean;
+    function MatchPassword(const plain: RawUTF8): boolean;
+  published
+    property password: RawUTF8 read fPassword;
+  end;
+
 
 implementation
 
@@ -251,6 +266,46 @@ procedure InitializeConstants;
 begin
   GetEnumTrimmedNames(TypeInfo(TCountryIdentifier), @COUNTRY_ISO2);
   COUNTRY_ISO2[ccUndefined] := '';
+end;
+
+
+{ TSQLUserAuth }
+
+function TSQLUserAuth.SetPassword(const plain: RawUTF8): boolean;
+var
+  hash: TSHA3;
+  salt, final: THash256;
+begin
+  result := false;
+  if (PosExChar(' ', plain) > 0) or not IsValidUTF8WithoutControlChars(plain) then
+    exit;
+  if (length(plain) < 8) or (UpperCase(plain) = plain) then
+    exit;
+  TAESPRNG.Main.Fill(salt);
+  hash.Init(SHA3_256);
+  hash.Update(@salt, SizeOf(salt));
+  hash.Update(plain);
+  hash.Final(final);
+  fPassword := BinToBase64uri(@salt, SizeOf(salt)) + '|' + BinToBase64uri(@final, SizeOf(final));
+  result := true;
+end;
+
+function TSQLUserAuth.MatchPassword(const plain: RawUTF8): boolean;
+var
+  salt, final: RawUTF8;
+  salt1, fin1, fin2: THash256;
+  hash: TSHA3;
+begin
+  result := false;
+  split(fPassword, '|', salt, final);
+  if not Base64uriToBin(salt, @salt1, SizeOf(salt1)) or
+     not Base64uriToBin(final, @fin1, SizeOf(fin1)) then
+    exit;
+  hash.Init(SHA3_256);
+  hash.Update(@salt1, SizeOf(salt1));
+  hash.Update(plain);
+  hash.Final(fin2);
+  result := IsEqual(fin1, fin2);
 end;
 
 

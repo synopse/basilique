@@ -57,7 +57,8 @@ uses
   SynTable,
   SynLog,
   mORMot,
-  SynTests;
+  SynTests,
+  SynCrypto;
 
 type
 
@@ -65,17 +66,44 @@ type
 
   TTestUserKingdom = class(TSynTestCase)
   published
-    procedure UserUnitTests;
+    procedure UserSecurity;
   end;
 
 
 implementation
 
+uses
+  KdomObjUser;
 
 { TTestUserKingdom }
 
-procedure TTestUserKingdom.UserUnitTests;
+procedure TTestUserKingdom.UserSecurity;
+var
+  u: TSQLUserAuth;
+  i: integer;
+  p: RawUTF8;
 begin
+  u := TSQLUserAuth.Create;
+  try
+    check(not u.SetPassword('has spaces'));
+    check(not u.SetPassword(' hasspaces'));
+    check(not u.SetPassword('has'#9'spaces'));
+    for i := 0 to 100 do begin
+      p := TAESPRNG.Main.RandomPassword(i);
+      check(u.SetPassword(p) = (i >= 8));
+      if i < 8 then
+        continue;
+      check(u.MatchPassword(p));
+      check(not u.MatchPassword(p + 'a'));
+      check(not u.MatchPassword(copy(p, 1, i - 1)));
+      dec(p[i - 2]);
+      check(not u.MatchPassword(p));
+      inc(p[i - 2]);
+      check(u.MatchPassword(p));
+    end;
+  finally
+    u.Free;
+  end;
 end;
 
 initialization
