@@ -202,8 +202,9 @@ type
 
 type
   /// supported languages for TUserPreferences
-  // - i.e. mainly
-  TUserLanguage = (ulEnglish, ulSpanish, ulFrench, ulItalian);
+  // - i.e. mainly the prefered language at UI
+  // - see TTextLanguage for the languages supported at Text level
+  TUserLanguage = (ulEnglish, ulSpanish, ulFrench, ulGerman, ulItalian);
 
   /// User-specific way of doing things
   // - some fields are hardcoded as enumerates, some are just
