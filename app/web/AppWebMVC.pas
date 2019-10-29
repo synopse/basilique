@@ -1,7 +1,8 @@
-/// Kingdom User Services interfaces
+/// MVC Web Application Controller
+// - Views are Mustache HTML templates, and Model our KDD services
 // - this unit is a part of the freeware Synopse Basilique framework,
 // licensed under a GPL v3 license
-unit KdomServUserAPI;
+unit AppWebMVC;
 
 {
     This file is part of Synopse Basilique framework.
@@ -57,24 +58,42 @@ uses
   SynTable,
   SynLog,
   mORMot,
+  mORMotMVC,
   KdomObjUser,
-  KdomObjCommunity;
-
+  KdomObjCommunity,
+  KdomObjText,
+  KdomObjThread,
+  KdomServUserAPI;
 
 type
-  TRegisterResult = (rrSuccess, rrInternalError,
-    rrUserNameTooWeak, rrUserEmailInvalid, rrUserEmailAlreadyExists,
-    rrWeakPassword);
+  IAppWebMVC = interface(IMVCApplication)
+    ['{F1BD0553-F3EF-496E-A2E4-F21A4A7E7959}']
+  end;
 
-  /// User Registration Kingdom service
-  IRegister = interface(IInvokable)
-    ['{8090452A-901C-42A6-872C-F0732429977E}']
-    function NewUser(const name, email, plainpassword: RawUTF8;
-      out user: TUserID): TRegisterResult;
+  TAppWebMVC = class(TMVCApplication, IAppWebMVC)
+  public
+    procedure Start(aServer: TSQLRestServer); reintroduce;
+  published
+    procedure Default(var Scope: variant);
   end;
 
 
 implementation
+
+
+{ TAppWebMVC }
+
+procedure TAppWebMVC.Start(aServer: TSQLRestServer);
+begin
+  inherited Start(aServer, TypeInfo(IAppWebMVC));
+  fMainRunner := TMVCRunOnRestServer.Create(self).
+    SetCache('Default',cacheRootIfNoSession,15);
+end;
+
+procedure TAppWebMVC.Default(var Scope: variant);
+begin
+
+end;
 
 
 initialization
@@ -87,5 +106,5 @@ initialization
   TJSONSerializer.RegisterObjArrayForJSON([
     ]);
   TInterfaceFactory.RegisterInterfaces([
-    TypeInfo(IRegister)]);
+    ]);
 end.

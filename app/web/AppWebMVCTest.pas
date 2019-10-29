@@ -1,7 +1,7 @@
-/// Kingdom User Services interfaces
+/// MVC Web Application Tests
 // - this unit is a part of the freeware Synopse Basilique framework,
 // licensed under a GPL v3 license
-unit KdomServUserAPI;
+unit AppWebMVCTest;
 
 {
     This file is part of Synopse Basilique framework.
@@ -57,25 +57,67 @@ uses
   SynTable,
   SynLog,
   mORMot,
+  SynTests,
+  mORMotHttpServer,
   KdomObjUser,
-  KdomObjCommunity;
-
+  KdomObjCommunity,
+  KdomServUserAPI,
+  KdomServRegister,
+  AppWebMVC;
 
 type
-  TRegisterResult = (rrSuccess, rrInternalError,
-    rrUserNameTooWeak, rrUserEmailInvalid, rrUserEmailAlreadyExists,
-    rrWeakPassword);
-
-  /// User Registration Kingdom service
-  IRegister = interface(IInvokable)
-    ['{8090452A-901C-42A6-872C-F0732429977E}']
-    function NewUser(const name, email, plainpassword: RawUTF8;
-      out user: TUserID): TRegisterResult;
+  TTestMVCApplication = class(TSynTestCase)
+  protected
+    fServer: TSQLRestServer;
+    fMVCApp: TAppWebMVC;
+    fHttp: TSQLHttpServer;
+  published
+    procedure StartApp;
+    procedure UserRegistration;
+    procedure ShutdownApp;
   end;
 
 
+const
+  DEBUGMVCAPP = true;
+
 implementation
 
+
+{ TTestMVCApplication }
+
+procedure TTestMVCApplication.StartApp;
+begin
+  fServer := TSQLRestServerFullMemory.CreateWithOwnModel(
+    [TSQLUser, TSQLUserAuth], {restauth=}false, 'web');
+  fServer.CreateMissingTables;
+  check(fServer.ServiceDefine(TServiceRegister, [IRegister]) <> nil);
+  fMVCApp := TAppWebMVC.Create;
+  fMVCApp.Start(fServer);
+  fHttp := TSQLHttpServer.Create('8092',fServer
+    {$ifndef ONLYUSEHTTPSOCKET},'+',useHttpApiRegisteringURI{$endif});
+  fHttp.RootRedirectToURI('web/default');    // redirect / to web/default
+  fServer.RootRedirectGet := 'web/default';  // redirect blog to web/default
+end;
+
+procedure TTestMVCApplication.UserRegistration;
+begin
+
+end;
+
+procedure TTestMVCApplication.ShutdownApp;
+begin
+  if DEBUGMVCAPP then begin
+    writeln('MVC AppServer is running!');
+    writeln('check e.g. http://localhost:8092/web/mvc-info');
+    writeln('Press [Enter] to continue');
+    readln;
+    writeln('Server Shutdown...');
+  end;
+  fHttp.Free;
+  fMVCApp.Free;
+  fServer.Free;
+end;
 
 initialization
   TTextWriter.RegisterCustomJSONSerializerFromTextSimpleType([
@@ -87,5 +129,5 @@ initialization
   TJSONSerializer.RegisterObjArrayForJSON([
     ]);
   TInterfaceFactory.RegisterInterfaces([
-    TypeInfo(IRegister)]);
+    ]);
 end.

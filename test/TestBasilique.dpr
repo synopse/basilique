@@ -53,7 +53,6 @@ uses
   mORMot,
   SynCrtSock,
   SynBidirSock,
-  dddDomUserTypes,
   dddDomCountry,
   KdomObjUser in '..\kdom\obj\KdomObjUser.pas',
   KdomObjUserTests in '..\kdom\obj\KdomObjUserTests.pas',
@@ -61,22 +60,27 @@ uses
   KdomObjText in '..\kdom\obj\KdomObjText.pas',
   KdomObjThread in '..\kdom\obj\KdomObjThread.pas',
   KdomServUserAPI in '..\kdom\serv\KdomServUserAPI.pas',
-  KdomServRegister in '..\kdom\serv\KdomServRegister.pas';
+  KdomServRegister in '..\kdom\serv\KdomServRegister.pas',
+  AppWebMVC in '..\app\web\AppWebMVC.pas',
+  AppWebMVCTest in '..\app\web\AppWebMVCTest.pas';
 
 type
   TTestBasilique = class(TSynTestsLogged)
   published
     procedure Kingdom;
+    procedure Applications;
   end;
 
-
-{ TTestBasilique }
 
 procedure TTestBasilique.Kingdom;
 begin
   AddCase([TTestUserKingdom]);
 end;
 
+procedure TTestBasilique.Applications;
+begin
+  AddCase([TTestMVCApplication]);
+end;
 
 
 begin
