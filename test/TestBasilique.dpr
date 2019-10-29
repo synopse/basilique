@@ -53,6 +53,8 @@ uses
   mORMot,
   SynCrtSock,
   SynBidirSock,
+  dddDomUserTypes,
+  dddDomCountry,
   KdomObjUser in '..\kdom\obj\KdomObjUser.pas',
   KdomObjUserTests in '..\kdom\obj\KdomObjUserTests.pas',
   KdomObjCommunity in '..\kdom\obj\KdomObjCommunity.pas',

@@ -7,7 +7,7 @@
 "Basilique" is the French term for "Basilica", which is a kind of building in Architecture.
 
 > *The Roman basilica was a large public building where business or legal matters could be transacted. **The first basilicas had no religious function at all**. As early as the time of Augustus, a public basilica for transacting business had been part of any settlement that considered itself a city, used in the same way as the covered market houses of late medieval northern Europe, where the meeting room, for lack of urban space, was set above the arcades, however. Although their form was variable, **basilicas often contained interior colonnades that divided the space, giving aisles or arcaded spaces on one or both sides, with an apse at one end (or less often at each end), where the magistrates sat, often on a slightly raised dais**. The central aisle tended to be wide and was higher than the flanking aisles, so that light could penetrate through the clerestory windows.*
-> - from https://en.wikipedia.org/wiki/Basilica#Architecture
+> from https://en.wikipedia.org/wiki/Basilica#Architecture
 
 So a "Basilique" was just a public gathering place, in the heart of the Roman cities, where people interact and deal with their interests.
 
