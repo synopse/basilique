@@ -66,7 +66,7 @@ type
   TServiceRegister = class(TInjectableObjectRest, IRegister)
   protected
     // IRegister methods
-    function NewUser(const name, email, plainpassword: RawUTF8): TRegisterResult;
+    function NewUser(const name, email, plainpassword: RawUTF8; out user: TUserID): TRegisterResult;
   end;
 
 
@@ -74,7 +74,8 @@ implementation
 
 { TServiceRegister  }
 
-function TServiceRegister.NewUser(const name, email, plainpassword: RawUTF8): TRegisterResult;
+function TServiceRegister.NewUser(const name, email, plainpassword: RawUTF8;
+  out user: TUserID): TRegisterResult;
 var
   u: TSQLUser;
   ua: TSQLUserAuth;
@@ -85,14 +86,11 @@ begin
   result := rrUserEmailInvalid;
   if not IsValidEmail(pointer(email)) then
     exit;
-  result := rrUserNameAlreadyExists;
-  if fServer.OneFieldValue(TSQLUser, 'ID', 'name=?', [name]) <> '' then
-    exit;
-  result := rrUserEmailAlreadyExists;
-  if fServer.OneFieldValue(TSQLUser, 'ID', 'email=?', [email]) <> '' then
-    exit;
   ua := TSQLUserAuth.Create;
   try
+    result := rrUserEmailAlreadyExists;
+    if not fServer.Retrieve('email=?', [], [email], ua) then
+      exit;
     result := rrWeakPassword;
     if not ua.SetPassword(plainpassword) then
       exit;
@@ -101,8 +99,11 @@ begin
     try
       u.name := name;
       u.email := email;
-      if fServer.Add(u, true) <> 0 then begin
-        ua.IDValue := u.IDValue;
+      { TODO : use system-wide genuine TUserID }
+      user := fServer.Add(u, true);
+      if user <> 0 then begin
+        ua.IDValue := user;
+        ua.email := email;
         if fServer.Add(ua, true, true) <> 0 then
           result := rrSuccess
         else // rollback User on UserAuth writing problem (unlikely)

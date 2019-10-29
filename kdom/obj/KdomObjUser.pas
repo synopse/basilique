@@ -238,12 +238,15 @@ type
   TSQLUser = class(TSQLRecordNoCaseExtended)
   protected
     fName: RawUTF8;
-    fEmail: RawUTF8;
+    fEmail: TEmail;
     fAddress: TAddressObjArray;
     fPreferences: TUserPreferencesObjArray;
+  public
+    class procedure InitializeTable(Server: TSQLRestServer; const FieldName: RawUTF8;
+      Options: TSQLInitializeTableOptions); override;
   published
     property name: RawUTF8 read fName write fName;
-    property email: RawUTF8 read fEmail write fEmail;
+    property email: TEmail read fEmail write fEmail;
     property address: TAddressObjArray read fAddress;
     property preferences: TUserPreferencesObjArray read fPreferences;
   end;
@@ -253,12 +256,16 @@ type
   // - bounded context: User security
   TSQLUserAuth = class(TSQLRecordNoCaseExtended)
   protected
+    fEmail: TEmail;
     fPassword: RawUTF8;
   public
+    class procedure InitializeTable(Server: TSQLRestServer; const FieldName: RawUTF8;
+      Options: TSQLInitializeTableOptions); override;
     /// properly set the password field, with salt and strongness validation
     function SetPassword(const plain: RawUTF8): boolean;
     function MatchPassword(const plain: RawUTF8): boolean;
   published
+    property email: TEmail read fEmail write fEmail;
     property password: RawUTF8 read fPassword;
   end;
 
@@ -271,8 +278,28 @@ begin
   COUNTRY_ISO2[ccUndefined] := '';
 end;
 
+{ TSQLUser }
+
+class procedure TSQLUser.InitializeTable(Server: TSQLRestServer;
+  const FieldName: RawUTF8; Options: TSQLInitializeTableOptions);
+begin
+  inherited InitializeTable(Server, FieldName, Options);
+  if FieldName = '' then begin
+    Server.CreateSQLIndex(self, 'name', {unique=}false);
+    Server.CreateSQLIndex(self, 'email', {unique=}true);
+  end;
+end;
+
 
 { TSQLUserAuth }
+
+class procedure TSQLUserAuth.InitializeTable(Server: TSQLRestServer;
+  const FieldName: RawUTF8; Options: TSQLInitializeTableOptions);
+begin
+  inherited InitializeTable(Server, FieldName, Options);
+  if FieldName = '' then
+    Server.CreateSQLIndex(self, 'email', {unique=}true);
+end;
 
 function TSQLUserAuth.SetPassword(const plain: RawUTF8): boolean;
 var

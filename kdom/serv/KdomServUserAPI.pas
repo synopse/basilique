@@ -63,14 +63,14 @@ uses
 
 type
   TRegisterResult = (rrSuccess, rrInternalError,
-    rrUserNameTooWeak, rrUserEmailInvalid,
-    rrUserNameAlreadyExists, rrUserEmailAlreadyExists,
+    rrUserNameTooWeak, rrUserEmailInvalid, rrUserEmailAlreadyExists,
     rrWeakPassword);
 
   /// User Registration Kingdom service
   IRegister = interface(IInvokable)
     ['{8090452A-901C-42A6-872C-F0732429977E}']
-    function NewUser(const name, email, plainpassword: RawUTF8): TRegisterResult;
+    function NewUser(const name, email, plainpassword: RawUTF8;
+      out user: TUserID): TRegisterResult;
   end;
 
 
