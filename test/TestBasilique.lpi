@@ -19,13 +19,10 @@
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="exe\TestBasilique"/>
-          </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);..\..\lib;..\..\lib\SQLite3"/>
             <Libraries Value="..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\kdom\obj;..\kdom\serv"/>
+            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\..\lib\SQLite3\DDD\dom;..\kdom\obj;..\kdom\serv;..\app\web"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -56,13 +53,10 @@
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="exe\TestBasilique"/>
-          </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);..\..\lib;..\..\lib\SQLite3"/>
             <Libraries Value="..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\kdom\obj;..\kdom\serv"/>
+            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\..\lib\SQLite3\DDD\dom;..\kdom\obj;..\kdom\serv;..\app\web"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -92,13 +86,10 @@
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="exe\TestBasilique"/>
-          </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);..\..\lib;..\..\lib\SQLite3"/>
             <Libraries Value="..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\kdom\obj;..\kdom\serv"/>
+            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\..\lib\SQLite3\DDD\dom;..\kdom\obj;..\kdom\serv;..\app\web"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -122,13 +113,10 @@
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="exe\TestBasilique"/>
-          </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);..\..\lib;..\..\lib\SQLite3"/>
             <Libraries Value="..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\kdom\obj;..\kdom\serv"/>
+            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\..\lib\SQLite3\DDD\dom;..\kdom\obj;..\kdom\serv;..\app\web"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -154,8 +142,8 @@
           <PathDelim Value="\"/>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);..\..\lib;..\..\lib\SQLite3"/>
-            <Libraries Value="..\..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\data;..\serv;..\daemon;..\ext\flre"/>
+            <Libraries Value="..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
+            <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\..\lib\SQLite3\DDD\dom;..\kdom\obj;..\kdom\serv;..\app\web"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -194,15 +182,17 @@
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
-    <Target>
-      <Filename Value="exe/TestBasilique"/>
-    </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);..\..\lib;..\..\lib\SQLite3"/>
       <Libraries Value="..\..\lib\static\$(TargetCPU)-$(TargetOS)"/>
-      <OtherUnitFiles Value="..\..\lib;..\..\lib\SQLite3;..\..\lib\SQLite3\DDD\infra;..\kdom\obj;..\kdom\serv"/>
-      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      <OtherUnitFiles Value="../../lib;../../lib/SQLite3;../../lib/SQLite3/DDD/infra;../../lib/SQLite3/DDD/dom;../kdom/obj;../kdom/serv;../app/web"/>
+      <UnitOutputDirectory Value="lib/default"/>
     </SearchPaths>
+    <Linking>
+      <Debugging>
+        <UseHeaptrc Value="True"/>
+      </Debugging>
+    </Linking>
     <Other>
       <CustomOptions Value="-dONLYUSEHTTPSOCKET"/>
     </Other>
