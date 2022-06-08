@@ -27,7 +27,7 @@ After using Domain-Driven-Design for years, we defined a cut-down version of DDD
 
 During the last EKON 23 technical conferences in Germany, I made some sessions and a workshop about this new project architecture and design.
 
-Please check http://blog.synopse.info/post/2019/10/30/EKON-23-Presentation-Slide-and-Code for the associated Slides!
+Please check http://blog.synopse.info?post/2019/10/30/EKON-23-Presentation-Slide-and-Code for the associated Slides!
 
 # Get Started
 
